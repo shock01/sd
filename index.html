@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+   <head>
+      <meta encoding="UTF-8" />
+      <title>Angular SVG Directives</title>
+      <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+   </head>
+   <body>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="src/sd.js"></script>
+      <div ng-app="demo" ng-controller="DemoCtrl" class="container">
+         <h1>Angular SVG Directive Demo</h1>
+         <p class="lead">Basic demo of what can be done with angular and data binding svg.</p>
+         <div class="hero-unit">
+            <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink">
+               <defs>
+                  <!--  SVG filters taken from : http://docs.webplatform.org/wiki/svg/elements/feColorMatrix -->
+                  <filter id="saturate">
+                     <feColorMatrix in="SourceGraphic" type="saturate" values=".5" result="A"/>
+                  </filter>
+                  <filter id="hueRotate">
+                     <feColorMatrix in="SourceGraphic" type="hueRotate" values="45" result="A"/>
+                  </filter>
+                  <filter id="L2A">
+                     <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="A"/>
+                  </filter>
+                  <filter id="matrix-contrast">
+                     <feColorMatrix in="SourceGraphic" type="matrix" values="1.2 0 0 0 -0.2 
+                        0 1.2 0 0 -0.2 
+                        0 0 1.2 0 -0.2
+                        0 0 0 1 0"/>
+                  </filter>
+                  <filter id="matrix-sepia">
+                     <feColorMatrix in="SourceGraphic" type="matrix" values=".35 .35 .35 0 0 
+                        .25 .25 .25 0 0 
+                        .15 .15 .15 0 0
+                        0 0 0 1 0"/>
+                  </filter>
+                  <filter id="matrix-greyscale">
+                     <feColorMatrix in="SourceGraphic" type="matrix" values=".33 .33 .33 0 0 
+                        .33 .33 .33 0 0 
+                        .33 .33 .33 0 0
+                        0 0 0 1 0"/>
+                  </filter>
+                  <filter id="matrix-greyscale-greenboost">
+                     <feColorMatrix in="SourceGraphic" type="matrix" values=".25 .5 .25 0 0 
+                        .25 .5 .25 0 0 
+                        .25 .5 .25 0 0
+                        0 0 0 1 0"/>
+                  </filter>
+                  <filter id="matrix-invert">
+                     <feColorMatrix in="SourceGraphic" type="matrix" values="-1 0 0 0 1 
+                        0 -1 0 0 1 
+                        0 0 -1 0 1
+                        0 0 0 1 0"/>
+                  </filter>
+               </defs>
+               <image y="100" sd:filter="filter !== 'none' ? 'url(#' + filter + ')' : ''" sd:xlink-href="image" width="200" height="100%" preserveAspectRatio="xMinYMin meet"/>
+            </svg>
+         </div>
+         <section>
+            <form role="form" class="form-inline">
+               <div class="form-group">
+                  <label for="width">Set width of rect</label>
+                  <input class="form-control" type="range" min="10" max="400" ng-model="width" name="width" />
+               </div>
+               <div class="form-group">
+                  <label for="height">Set height of rect</label>
+                  <input class="form-control" type="range" min="10" max="400" ng-model="height" name="height" />
+               </div>
+               <div class="form-group">
+                  <label for="fill">Set color of rect</label>
+                  <input class="form-control" type="color" ng-model="fill" name="fill" />
+               </div>
+               <div class="form-group">
+                  <label for="stroke">Set color of stroke</label>
+                  <input class="form-control" type="color" ng-model="stroke" name="stroke" />
+               </div>
+               <div class="form-group">
+                  <label for="image">Set image</label>
+                  <input class="form-control" type="file" name="image" accept="image/*" />
+               </div>
+               <div class="form-group">
+                  <label for="imagefilter">Set image filter</label>
+                  <select class="form-control" name="imagefilter" ng-model="filter" ng-options="filter for filter in filters"></select>
+               </div>
+            </form>
+         </section>
+         <hr>
+         <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g x="50">
+               <rect sd:fill="fill" sd:width="width" sd:height="height" sd:stroke="stroke"/>
+               <g>
+                  <rect sd:onclick="clicked(event, item)" sd:stroke="stroke" ng:repeat="item in items" sd:x="item.x" sd:y="item.y" sd:width="item.width" sd:height="item.height" sd:fill="fill"/>
+                  <text x="0" y="170">ng:repeated items with click handler</text>
+               </g>
+            </g>
+         </svg>
+      </div>
+      <script>
+         angular.module('demo', ['sd']).
+          controller('DemoCtrl', function ($scope) {
+            $scope.width = 100;
+            $scope.height = 50;
+            $scope.fill = 'pink';
+            $scope.stroke = 'black';
+            
+            $scope.image = 'http://angularjs.org/img/AngularJS-large.png';
+            $scope.filter = 'none'
+            $scope.filters = ['none','saturate','hueRotate','L2A','matrix-contrast','matrix-sepia','matrix-greyscale','matrix-greyscale-greenboost','matrix-invert'];  
+            
+            $scope.items = [{x: 0, y: 100, width: 50, height: 50}, {x: 55, y: 100, width: 50, height: 50}, {x: 110, y: 100, width: 50, height: 50}]
+            
+            $scope.clicked = function (event, item) {
+              alert('Clicked:' + JSON.stringify(item));
+            }
+            
+            /**
+            * just for the demo this controller communicates to the view. just because i am lazy today :-)
+            */
+            document.querySelector('[name="image"]').addEventListener('change', function (event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+              var dataURL = this.result;
+                $scope.$apply(function () {
+                    $scope.image = dataURL;
+                })
+            }
+            reader.readAsDataURL(event.target.files[0]);
+            }, false);
+         
+            $scope.$watch('filter', function (value) {
+              console.log('Image filter set:' + value);
+            })
+          })
+      </script>
+   </body>
+</html>
