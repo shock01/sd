@@ -10,6 +10,9 @@
     	  XMLNS: 'http://www.w3.org/2000/xmlns/'
     };
     
+    // Viewport Attributes
+    var viewAttrs = ['viewBox','preserveAspectRatio'];
+    
     //Animation event attributes
     var animationAttrs = ['onbegin', 'onend', 'onload', 'onrepeat'];
 
@@ -97,6 +100,7 @@
     });
     // normal attributes
     angular.forEach([].concat(
+    	viewAttrs,
     	animationTargetAttrs, 
     	animationTimerAttrs, 
     	animationValueAttrs, 

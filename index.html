@@ -61,6 +61,22 @@
          <section>
             <form role="form" class="form-inline">
                <div class="form-group">
+                  <label for="viewBoxMinX">Set minX of viewBox</label>
+                  <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxMinX" name="viewBoxMinX" />
+               </div>
+               <div class="form-group">
+                  <label for="viewBoxMinX">Set minY of viewBox</label>
+                  <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxMinY" name="viewBoxMinY" />
+               </div>
+               <div class="form-group">
+                  <label for="viewBoxWidth">Set width of viewBox</label>
+                  <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxWidth" name="viewBoxWidth" />
+               </div>
+               <div class="form-group">
+                  <label for="viewBoxWidth">Set height of viewBox</label>
+                  <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxHeight" name="viewBoxHeight" />
+               </div>
+               <div class="form-group">
                   <label for="width">Set width of rect</label>
                   <input class="form-control" type="range" min="10" max="400" ng-model="width" name="width" />
                </div>
@@ -87,7 +103,10 @@
             </form>
          </section>
          <hr>
-         <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink">
+         <svg xmlns="http://www.w3.org/2000/svg" 
+              xmlns:sd="uri:whatevermakesyouhappy" 
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              sd:view-box="[viewBoxMinX, viewBoxMinY, viewBoxWidth, viewBoxHeight].join(' ')">
             <g x="50">
                <rect sd:fill="fill" sd:width="width" sd:height="height" sd:stroke="stroke"/>
                <g>
@@ -100,10 +119,16 @@
       <script>
          angular.module('demo', ['sd']).
           controller('DemoCtrl', function ($scope) {
-            $scope.width = 100;
+        	  $scope.viewBoxMinX = 0;
+        	  $scope.viewBoxMinY = 0;
+            $scope.viewBoxWidth = 400;
+            $scope.viewBoxHeight = 400;
+        	  $scope.width = 100;
             $scope.height = 50;
             $scope.fill = 'pink';
             $scope.stroke = 'black';
+            
+            
             
             $scope.image = 'http://angularjs.org/img/AngularJS-large.png';
             $scope.filter = 'none'
