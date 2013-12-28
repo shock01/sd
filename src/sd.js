@@ -12,9 +12,6 @@
     
     // Viewport Attributes
     var viewAttrs = ['viewBox','preserveAspectRatio'];
-    
-    //Animation event attributes
-    var animationAttrs = ['onbegin', 'onend', 'onload', 'onrepeat'];
 
     // Animation attribute target attributes
     var animationTargetAttrs = ['attributeType', 'attributeName'];
@@ -34,14 +31,8 @@
     // Core attributes
     var coreAttrs = ['id', 'xml:base', 'xml:lang', 'xml:space'];
 
-    // Document event attributes
-    var documentEventAttrs = ['onabort', 'onerror', 'onresize', 'onscroll', 'onunload', 'onzoom'];
-
     // Filter primitive attributes
     var filterPrimitiveAttrs = ['height', 'result', 'width', 'x', 'y'];
-
-    // Graphical event attributes
-    var graphicalEventAttrs = ['onactivate', 'onclick', 'onfocusin', 'onfocusout', 'onload', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup'];
 
     // Presentation attributes
     var presentationAttrs = ['alignment-baseline', 'baseline-shift', 'clip', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering',
@@ -74,31 +65,7 @@
     function attributeToDirectiveName(attrName) {
         return camelCase('sd-' + attrName);
     }
-
-    // event attributes
-    angular.forEach([].concat(
-    	animationAttrs, 
-    	graphicalEventAttrs), function (attrName) {
-        var directiveName = attributeToDirectiveName(attrName);
-        angular.module('sd').directive(directiveName, function ($parse) {
-            return {
-                compile: function compile(tElement, tAttrs, transclude) {
-                    var fn = $parse(tAttrs[directiveName]);
-                    return function postLink(scope, iElement, iAttrs, controller) {
-                        var element = iElement[0];
-                        element[attrName] = function (event) {
-                            scope.$apply(function () {
-                                fn(scope, {
-                                    event: (event || window.event)
-                                });
-                            });
-                        }
-                    }
-                }
-            }
-        });
-    });
-    // normal attributes
+    
     function setAttrValue(element, attrName, value) {
       var pair = attrName.split(':'),
           localName = pair.length === 1 ? pair[0] : pair[1],
@@ -124,7 +91,6 @@
     	presentationAttrs, 
     	transferFunctionAttrs,
     	xlinkAttrs), function (attrName) {
-    
       
         var directiveName = attributeToDirectiveName(attrName);
       	

@@ -112,12 +112,23 @@
                <rect sd:fill="{{fill}}" sd:stroke="{{stroke}}" sd:width="{{width}}" sd:height="{{height}}"/>
                <g>
                   <rect ng:repeat="item in items"  
-                        sd:onclick="clicked(event, item)" 
+                        ng:click="clicked(event, item)" 
                         sd:stroke="stroke" sd:fill="fill"
                         sd:x="item.x" sd:y="item.y" 
                         sd:width="item.width" sd:height="item.height"/>
                   <text x="0" y="170">ng:repeated items with click handler {{stroke}}</text>
                </g>
+            </g>
+            <g>
+             <text x="0" y="200">Animation count: {{animationCount}}</text>
+             <rect x="10" y="10" width="100" height="100" sd:fill="fill">
+                  <animate attributeType="XML"
+                           attributeName="x"
+                           from="-100" to="120"
+                           sd:dur="{{animationDuration}}"
+                           onload="console.log('loaded')"
+                           repeatCount="indefinite"/>
+              </rect>
             </g>
          </svg>
       </div>
@@ -132,7 +143,7 @@
             $scope.height = 50;
             $scope.fill = 'pink';
             $scope.stroke = 'black';
-            
+            $scope.animationDuration = '4s';
             
             
             $scope.image = 'http://angularjs.org/img/AngularJS-large.png';
@@ -143,6 +154,10 @@
             
             $scope.clicked = function (event, item) {
               alert('Clicked:' + JSON.stringify(item));
+            }
+            
+            $scope.activated = function () {
+              alert('Activated');
             }
             
             /**
