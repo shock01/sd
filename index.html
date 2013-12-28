@@ -108,10 +108,15 @@
               xmlns:xlink="http://www.w3.org/1999/xlink"
               sd:view-box="[viewBoxMinX, viewBoxMinY, viewBoxWidth, viewBoxHeight].join(' ')">
             <g x="50">
-               <rect sd:fill="fill" sd:width="width" sd:height="height" sd:stroke="stroke"/>
+               <!--  interpolated attributes {{}} -->
+               <rect sd:fill="{{fill}}" sd:stroke="{{stroke}}" sd:width="{{width}}" sd:height="{{height}}"/>
                <g>
-                  <rect sd:onclick="clicked(event, item)" sd:stroke="stroke" ng:repeat="item in items" sd:x="item.x" sd:y="item.y" sd:width="item.width" sd:height="item.height" sd:fill="fill"/>
-                  <text x="0" y="170">ng:repeated items with click handler</text>
+                  <rect ng:repeat="item in items"  
+                        sd:onclick="clicked(event, item)" 
+                        sd:stroke="stroke" sd:fill="fill"
+                        sd:x="item.x" sd:y="item.y" 
+                        sd:width="item.width" sd:height="item.height"/>
+                  <text x="0" y="170">ng:repeated items with click handler {{stroke}}</text>
                </g>
             </g>
          </svg>

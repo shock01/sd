@@ -99,6 +99,19 @@
         });
     });
     // normal attributes
+    function setAttrValue(element, attrName, value) {
+      var pair = attrName.split(':'),
+          localName = pair.length === 1 ? pair[0] : pair[1],
+          prefix = pair.length > 1 ? pair[0] : null;
+      if(prefix) {
+     	 var ns = XMLNS[prefix.toUpperCase()],
+     	 	nsPrefix = element.lookupPrefix(ns);
+     	 element.setAttributeNS(ns, nsPrefix + ':' + localName, value); 
+     	} else {
+     	  element.setAttributeNS(null, localName, value);
+     	}
+    }
+    
     angular.forEach([].concat(
     	viewAttrs,
     	animationTargetAttrs, 
@@ -111,29 +124,32 @@
     	presentationAttrs, 
     	transferFunctionAttrs,
     	xlinkAttrs), function (attrName) {
+    
       
         var directiveName = attributeToDirectiveName(attrName);
-        angular.module('sd').directive(directiveName, function () {
-          var pair = attrName.split(':'),
-              localName = pair.length === 1 ? pair[0] : pair[1],
-              prefix = pair.length > 1 ? pair[0] : null;
-          
-            return function (scope, iElement, iAttrs) {
-                var element = iElement[0];
+      	
+        angular.module('sd').directive(directiveName, function ($interpolate) {
+          return {
+            compile: function compile(tElement, tAttrs, transclude) {
+              
+              var interpolated = $interpolate(tAttrs[directiveName], true);
+              
+              return function (scope, iElement, iAttrs) {
+                var element = iElement[0],
+                	attrValue = iAttrs[directiveName];
                 
-                scope.$watch(iAttrs[directiveName], function (value) {
-                    if (typeof value !== 'undefined') {
-                      	if(prefix) {
-                      	 var ns = XMLNS[prefix.toUpperCase()],
-                      	 	nsPrefix = element.lookupPrefix(ns);
-                      	 console.log(prefix, XMLNS)
-                      	 element.setAttributeNS(ns, nsPrefix + ':' + localName, value); 
-                      	} else {
-                      	  element.setAttributeNS(null, localName, value);
-                      	}
+                if(typeof interpolated === 'function') {
+                  setAttrValue(element, attrName, interpolated(scope));
+                }
+                
+                scope.$watch(interpolated ? attrName : attrValue, function (value) {
+                  	if (typeof value !== 'undefined') {
+                      	setAttrValue(element, attrName, value);
                     }
                 });
-            };
+              }              
+            }
+          };
         });
     });
 }());
