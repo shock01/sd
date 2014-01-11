@@ -7,11 +7,7 @@ SVG Directive for angular
 
 ## Basic support for AngularJS SVG Bindings.
 - Supports all camelCases attributes like viewBox
-```
-<svg sd:view-box="0 0 {{width}} {{height}}"/>
-<image sd:xlink-href="{{href}}"/>
 
-```
 
 ## Support for xinclude
 
@@ -24,11 +20,6 @@ the included svg files can contain normal angular binding stuff like ng-repeat a
 - xpointer, parse and fallback not supported yet.
 - only works on svg content
 
-```
-<svg>
-  <sd:xinclude href="..."/>
-</svg>
-```
 
 # Installation
 - bower install angular bootstrap
