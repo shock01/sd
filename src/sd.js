@@ -1,5 +1,6 @@
 (function() {
     // declare the module
+    'use strict';
     angular.module('sd', []);
 
     // namespaces
@@ -67,38 +68,59 @@
      * TODO polyfill for XPathEvaluator
      */
     angular.module('sd').directive('sdXinclude', function($http, $compile, $templateCache) {
+
+        var xmlSerializer = new XMLSerializer();
         return {
             restrict: 'E',
             compile: function compile(tElement, tAttrs, transclude) {
-                var href = tAttrs['href'],
-                    xpointer = tAttrs['xpointer'];
 
                 return function postLink(scope, iElement, iAttrs, controller) {
-
+                    var element = iElement[0],
+                        href = iAttrs['href'],
+                        xpointer = iAttrs['xpointer'],
+                        parentNode = element.parentNode;
                     $http.get(href, {
                         cache: $templateCache
                     }).success(function(response) {
 
-                        var element = iElement[0],
-                            parentNode = element.parentNode,
-                            tpl = '<svg xmlns="http://www.w3.org/2000/svg">' + response + '</svg>',
-                            wrapper = document.createElement('div');
-                        wrapper.insertAdjacentHTML('afterbegin', response);
-                        // 
-                        element.appendChild(wrapper.firstChild);
-                        $compile(iElement.contents())(scope, function(clonedElement, scope) {
-                          	var frag = document.createDocumentFragment();
-                          	for(var i = 0, ii = clonedElement.length; i < ii; i++) {
-                          	  frag.appendChild(clonedElement[i])
-                          	  
-                          	}
-                            var newElement = clonedElement[0];
-                            parentNode.replaceChild(frag, element);
-                            if (xpointer) {
-                              // TODO implement please!!
+                        var tpl = '<svg>' + response + '</svg>',
+                            wrapper = document.createElement('div'),
+                            xPathWrapper = document.createElement('div'),
+                            frag = document.createDocumentFragment(),
+                            xPathResult,
+                            nodes = [],
+                            xml = '',
+                            node;
+                        wrapper.insertAdjacentHTML('afterBegin', tpl);
+
+                        if (xpointer) {
+                            xPathWrapper.insertAdjacentHTML('afterBegin', '<svg></svg>');
+                            xPathResult = document.evaluate(xpointer, wrapper, null, XPathResult.ANY_TYPE, null);
+                            while (xPathResult && (node = xPathResult.iterateNext())) {
+                                nodes.push(node);
                             }
+                            angular.forEach(nodes, function(node) {
+                                xml += xmlSerializer.serializeToString(node, 'text/xml');
+                            });
+                            xPathWrapper.insertAdjacentHTML('afterBegin', '<svg>' + xml + '</svg>');
+                            for (var j = 0, childNode; childNode = xPathWrapper.firstChild.childNodes[j++];) {
+                                frag.appendChild(childNode);
+                            }
+                        } else {
+                            frag.appendChild(wrapper.firstChild.firstChild);
+                        }
+                        element.appendChild(frag);
+
+                        $compile(iElement.contents())(scope, function(clonedElement, scope) {
+                            var frag = document.createDocumentFragment();
+                            for (var i = 0, ii = clonedElement.length; i < ii; i++) {
+                                frag.appendChild(clonedElement[i]);
+                            }
+                            parentNode.replaceChild(frag, element);
                         });
+
                         wrapper = null;
+                        xPathWrapper = null;
                     }).error(function(error) {
 
                     });

@@ -1,0 +1,6 @@
+<svg>
+  <g>
+    <text y="20">I am included using sd:xinclude yeah</text>
+    <rect y="40" ng:attr-width="{{width}}" height="20" fill="pink"/>
+  </g>
+</svg>

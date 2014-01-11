@@ -17,8 +17,15 @@ HTML5 supposed to be namespace unware. But it isn't. So working on a replacement
 the included svg files can contain normal angular binding stuff like ng-repeat and so on. Just check the index.html for example
 
 - Partial support for xinclude. Work in Progress.
-- xpointer, parse and fallback not supported yet.
-- only works on svg content
+- parse and fallback not supported yet.
+- only works on svg content (for now)
+- XPointer support depends on document.evaluate, you need to polyfill this for IE (https://code.google.com/p/wicked-good-xpath/)
+```
+<svg>
+  <sd:xinclude href="" xpointer="//[@id='anId']"/>
+</svg>
+```
+
 
 
 # Installation
@@ -37,6 +44,6 @@ the included svg files can contain normal angular binding stuff like ng-repeat a
 - xinclude xpointer,parse attributes
 
 # Hey it's just a quick commit
-- Add test cases (angular scenario)
+- Add test cases (angular scenario, ngdocs)
 - Add more attributes
 - Add documentation 'To Whom It May Concern'

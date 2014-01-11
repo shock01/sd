@@ -16,41 +16,8 @@
                <sd:xinclude href="includes/filters.svg"/>
                <image y="100" ng:attr-filter="{{filter !== 'none' ? 'url(#' + filter + ')' : ''}}" sd:xlink-href="image" ng:attr:width="{{width}}" height="100%" preserveAspectRatio="xMinYMin meet"/>
             </svg>
-         </div>
-         <section>
+            <h1>Image filters</h1>
             <form role="form" class="form-inline">
-               <div class="form-group">
-                  <label for="viewBoxMinX">Set minX of viewBox</label>
-                  <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxMinX" name="viewBoxMinX" />
-               </div>
-               <div class="form-group">
-                  <label for="viewBoxMinX">Set minY of viewBox</label>
-                  <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxMinY" name="viewBoxMinY" />
-               </div>
-               <div class="form-group">
-                  <label for="viewBoxWidth">Set width of viewBox</label>
-                  <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxWidth" name="viewBoxWidth" />
-               </div>
-               <div class="form-group">
-                  <label for="viewBoxWidth">Set height of viewBox</label>
-                  <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxHeight" name="viewBoxHeight" />
-               </div>
-               <div class="form-group">
-                  <label for="width">Set width of rect</label>
-                  <input class="form-control" type="range" min="10" max="400" ng-model="width" name="width" />
-               </div>
-               <div class="form-group">
-                  <label for="height">Set height of rect</label>
-                  <input class="form-control" type="range" min="10" max="400" ng-model="height" name="height" />
-               </div>
-               <div class="form-group">
-                  <label for="fill">Set color of rect</label>
-                  <input class="form-control" type="color" ng-model="fill" name="fill" />
-               </div>
-               <div class="form-group">
-                  <label for="stroke">Set color of stroke</label>
-                  <input class="form-control" type="color" ng-model="stroke" name="stroke" />
-               </div>
                <div class="form-group">
                   <label for="image">Set image</label>
                   <input class="form-control" type="file" name="image" accept="image/*" />
@@ -59,70 +26,119 @@
                   <label for="imagefilter">Set image filter</label>
                   <select class="form-control" name="imagefilter" ng-model="filter" ng-options="filter for filter in filters"></select>
                </div>
-                <div class="form-group">
-                  <label for="imagefilter">Animation duration</label>
-                  <input type="range" min="1" max="4" class="form-control" name="animationDuration" ng-model="animationDuration"/>
-               </div>
-               <div class="form-group">
-                  <label for="imagefilter">Animation Attribute</label>
-                  <select class="form-control" name="animationAttr" ng-model="animationAttr">
-                    <option value="x">x</option>
-                    <option value="y">y</option>
-                  </select>
-               </div>
             </form>
-         </section>
+         </div>
+         <hr/>
+         <h1>Basic shape manipulation</h1>
+         <div class="row">
+            <aside class="col-md-4">
+               <form role="form" class="form-inline">
+                  <div class="form-group">
+                     <label for="viewBoxMinX">Set minX of viewBox</label>
+                     <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxMinX" name="viewBoxMinX" />
+                  </div>
+                  <div class="form-group">
+                     <label for="viewBoxMinX">Set minY of viewBox</label>
+                     <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxMinY" name="viewBoxMinY" />
+                  </div>
+                  <div class="form-group">
+                     <label for="viewBoxWidth">Set width of viewBox</label>
+                     <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxWidth" name="viewBoxWidth" />
+                  </div>
+                  <div class="form-group">
+                     <label for="viewBoxWidth">Set height of viewBox</label>
+                     <input class="form-control" type="range" min="10" max="400" ng-model="viewBoxHeight" name="viewBoxHeight" />
+                  </div>
+                  <div class="form-group">
+                     <label for="width">Set width of rect</label>
+                     <input class="form-control" type="range" min="10" max="400" ng-model="width" name="width" />
+                  </div>
+                  <div class="form-group">
+                     <label for="height">Set height of rect</label>
+                     <input class="form-control" type="range" min="10" max="400" ng-model="height" name="height" />
+                  </div>
+                  <div class="form-group">
+                     <label for="fill">Set color of rect</label>
+                     <input class="form-control" type="color" ng-model="fill" name="fill" />
+                  </div>
+                  <div class="form-group">
+                     <label for="stroke">Set color of stroke</label>
+                     <input class="form-control" type="color" ng-model="stroke" name="stroke" />
+                  </div>
+               </form>
+            </aside>
+            <div class="col-md-6">
+               <svg xmlns="http://www.w3.org/2000/svg" 
+                  xmlns:sd="uri:whatevermakesyouhappy" 
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  sd:view-box="[viewBoxMinX, viewBoxMinY, viewBoxWidth, viewBoxHeight].join(' ')">
+                  <g>
+                     <!--  interpolated attributes {{}} -->
+                     <rect sd:fill="{{fill}}" sd:stroke="{{stroke}}" sd:width="{{width}}" sd:height="{{height}}"/>
+                     <g>
+                        <rect ng:repeat="item in [1,2,3]"  
+                           ng:click="clicked(event, item)" 
+                           ng:attr:stroke="{{stroke}}" 
+                           ng:attr:fill="{{fill}}"
+                           ng:attr-y="{{($index * height) + 10}}" 
+                           ng:attr:width="{{width}}" ng:attr:height="{{height}}"/>
+                     </g>
+                  </g>
+               </svg>
+            </div>
+         </div>
          <hr>
-         <svg xmlns="http://www.w3.org/2000/svg" 
-              xmlns:sd="uri:whatevermakesyouhappy" 
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              sd:view-box="[viewBoxMinX, viewBoxMinY, viewBoxWidth, viewBoxHeight].join(' ')">
-            <!-- 
-            <svg sd:svg
-             -->
-            <sd:xinclude href="test.svg"/>
-            
-            <g x="50">
-               <!--  interpolated attributes {{}} -->
-               <rect sd:fill="{{fill}}" sd:stroke="{{stroke}}" sd:width="{{width}}" sd:height="{{height}}"/>
-               <g>
-                  <rect ng:repeat="item in items"  
-                        ng:click="clicked(event, item)" 
-                        ng:attr:stroke="{{stroke}}" 
-                        ng:attr:fill="{{fill}}"
-                        ng:attr-x="{{item.x}}" ng:attr-y="{{item.y}}" 
-                        ng:attr:width="item.width" ng:attr:height="item.height"/>
-                  <text x="0" y="170">ng:repeated items with click handler {{stroke}}</text>
-               </g>
-            </g>
-            <g y="400">
-             <rect x="10" y="10" width="100" height="100" 
-                    ng:attr-fill="{{fill}}">
-                  <animate attributeType="XML"
-                           sd:attribute-name="animationAttr"
-                           from="-100" to="120"
-                           ng:attr-dur="{{animationDuration}}s"
-                           onload="console.log('loaded')"
-                           repeatCount="indefinite"/>
-              </rect>
-            </g>
+         <h2>Animated thingie</h2>
+         <form role="form" class="form-inline">
+            <div class="form-group">
+               <label for="imagefilter">Animation duration</label>
+               <input type="range" min="1" max="4" class="form-control" name="animationDuration" ng-model="animationDuration"/>
+            </div>
+            <div class="form-group">
+               <label for="imagefilter">Animation Attribute</label>
+               <select class="form-control" name="animationAttr" ng-model="animationAttr">
+                  <option value="x">x</option>
+                  <option value="y">y</option>
+               </select>
+            </div>
+         </form>
+         <svg>
+            <rect x="10" y="10" width="100" height="100" 
+               ng:attr-fill="{{fill}}">
+               <animate attributeType="XML"
+                  sd:attribute-name="animationAttr"
+                  from="-100" to="120"
+                  ng:attr-dur="{{animationDuration}}s"
+                  onload="console.log('loaded')"
+                  repeatCount="indefinite"/>
+            </rect>
          </svg>
          <hr>
          <h2>SD Includes</h2>
-         <h3>All rects</h3>
+         <h3>Bare example</h3>
+         <pre>&lt;sd:xinclude href="includes/test.svg"/&gt;</pre>
+         <svg>
+            <sd:xinclude href="includes/test.svg"/>
+         </svg>
+         <h3>Rects first</h3>
+         <pre>&lt;sd:xinclude href="includes/rects.svg" xpointer="//*[@id='first']"/&gt;</pre>
          <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <sd:xinclude href="includes/rects.svg"/>
+            <sd:xinclude href="includes/rects.svg" xpointer="//*[@id='first']"/>
+         </svg>
+         <h3>Rects second</h3>
+         <pre>&lt;sd:xinclude href="includes/rects.svg" xpointer="//*[@id='second']"/&gt;</pre>
+         <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <sd:xinclude href="includes/rects.svg" xpointer="//*[@id='second']"/>
          </svg>
       </div>
-
       <script>
          angular.module('demo', ['sd']).
           controller('DemoCtrl', function ($scope) {
-        	  $scope.viewBoxMinX = 0;
-        	  $scope.viewBoxMinY = 0;
+           $scope.viewBoxMinX = 0;
+           $scope.viewBoxMinY = 0;
             $scope.viewBoxWidth = 400;
             $scope.viewBoxHeight = 400;
-        	  $scope.width = 100;
+           $scope.width = 100;
             $scope.height = 50;
             $scope.fill = 'pink';
             $scope.stroke = 'black';
@@ -133,9 +149,6 @@
             $scope.image = 'http://angularjs.org/img/AngularJS-large.png';
             $scope.filter = 'none'
             $scope.filters = ['none','saturate','hueRotate','L2A','matrix-contrast','matrix-sepia','matrix-greyscale','matrix-greyscale-greenboost','matrix-invert'];  
-            
-            $scope.items = [{x: 0, y: 100, width: 50, height: 50}, {x: 55, y: 100, width: 50, height: 50}, {x: 110, y: 100, width: 50, height: 50}]
-            
             $scope.clicked = function (event, item) {
               alert('Clicked:' + JSON.stringify(item));
             }
