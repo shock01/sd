@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+   <defs>
+      <filter id="saturate">
+         <feColorMatrix in="SourceGraphic" type="saturate" values=".5" result="A"/>
+      </filter>
+      <filter id="hueRotate">
+         <feColorMatrix in="SourceGraphic" type="hueRotate" values="45" result="A"/>
+      </filter>
+      <filter id="L2A">
+         <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="A"/>
+      </filter>
+      <filter id="matrix-contrast">
+         <feColorMatrix in="SourceGraphic" type="matrix" values="1.2 0 0 0 -0.2 
+            0 1.2 0 0 -0.2 
+            0 0 1.2 0 -0.2
+            0 0 0 1 0"/>
+      </filter>
+      <filter id="matrix-sepia">
+         <feColorMatrix in="SourceGraphic" type="matrix" values=".35 .35 .35 0 0 
+            .25 .25 .25 0 0 
+            .15 .15 .15 0 0
+            0 0 0 1 0"/>
+      </filter>
+      <filter id="matrix-greyscale">
+         <feColorMatrix in="SourceGraphic" type="matrix" values=".33 .33 .33 0 0 
+            .33 .33 .33 0 0 
+            .33 .33 .33 0 0
+            0 0 0 1 0"/>
+      </filter>
+      <filter id="matrix-greyscale-greenboost">
+         <feColorMatrix in="SourceGraphic" type="matrix" values=".25 .5 .25 0 0 
+            .25 .5 .25 0 0 
+            .25 .5 .25 0 0
+            0 0 0 1 0"/>
+      </filter>
+      <filter id="matrix-invert">
+         <feColorMatrix in="SourceGraphic" type="matrix" values="-1 0 0 0 1 
+            0 -1 0 0 1 
+            0 0 -1 0 1
+            0 0 0 1 0"/>
+      </filter>
+   </defs>
+ </svg>

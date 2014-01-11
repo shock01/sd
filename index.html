@@ -13,49 +13,8 @@
          <p class="lead">Basic demo of what can be done with angular and data binding svg.</p>
          <div class="hero-unit">
             <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink">
-               <defs>
-                  <!--  SVG filters taken from : http://docs.webplatform.org/wiki/svg/elements/feColorMatrix -->
-                  <filter id="saturate">
-                     <feColorMatrix in="SourceGraphic" type="saturate" values=".5" result="A"/>
-                  </filter>
-                  <filter id="hueRotate">
-                     <feColorMatrix in="SourceGraphic" type="hueRotate" values="45" result="A"/>
-                  </filter>
-                  <filter id="L2A">
-                     <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="A"/>
-                  </filter>
-                  <filter id="matrix-contrast">
-                     <feColorMatrix in="SourceGraphic" type="matrix" values="1.2 0 0 0 -0.2 
-                        0 1.2 0 0 -0.2 
-                        0 0 1.2 0 -0.2
-                        0 0 0 1 0"/>
-                  </filter>
-                  <filter id="matrix-sepia">
-                     <feColorMatrix in="SourceGraphic" type="matrix" values=".35 .35 .35 0 0 
-                        .25 .25 .25 0 0 
-                        .15 .15 .15 0 0
-                        0 0 0 1 0"/>
-                  </filter>
-                  <filter id="matrix-greyscale">
-                     <feColorMatrix in="SourceGraphic" type="matrix" values=".33 .33 .33 0 0 
-                        .33 .33 .33 0 0 
-                        .33 .33 .33 0 0
-                        0 0 0 1 0"/>
-                  </filter>
-                  <filter id="matrix-greyscale-greenboost">
-                     <feColorMatrix in="SourceGraphic" type="matrix" values=".25 .5 .25 0 0 
-                        .25 .5 .25 0 0 
-                        .25 .5 .25 0 0
-                        0 0 0 1 0"/>
-                  </filter>
-                  <filter id="matrix-invert">
-                     <feColorMatrix in="SourceGraphic" type="matrix" values="-1 0 0 0 1 
-                        0 -1 0 0 1 
-                        0 0 -1 0 1
-                        0 0 0 1 0"/>
-                  </filter>
-               </defs>
-               <image y="100" sd:filter="filter !== 'none' ? 'url(#' + filter + ')' : ''" sd:xlink-href="image" width="200" height="100%" preserveAspectRatio="xMinYMin meet"/>
+               <sd:xinclude href="includes/filters.svg"/>
+               <image y="100" ng:attr-filter="{{filter !== 'none' ? 'url(#' + filter + ')' : ''}}" sd:xlink-href="image" ng:attr:width="{{width}}" height="100%" preserveAspectRatio="xMinYMin meet"/>
             </svg>
          </div>
          <section>
@@ -100,6 +59,17 @@
                   <label for="imagefilter">Set image filter</label>
                   <select class="form-control" name="imagefilter" ng-model="filter" ng-options="filter for filter in filters"></select>
                </div>
+                <div class="form-group">
+                  <label for="imagefilter">Animation duration</label>
+                  <input type="range" min="1" max="4" class="form-control" name="animationDuration" ng-model="animationDuration"/>
+               </div>
+               <div class="form-group">
+                  <label for="imagefilter">Animation Attribute</label>
+                  <select class="form-control" name="animationAttr" ng-model="animationAttr">
+                    <option value="x">x</option>
+                    <option value="y">y</option>
+                  </select>
+               </div>
             </form>
          </section>
          <hr>
@@ -107,31 +77,44 @@
               xmlns:sd="uri:whatevermakesyouhappy" 
               xmlns:xlink="http://www.w3.org/1999/xlink"
               sd:view-box="[viewBoxMinX, viewBoxMinY, viewBoxWidth, viewBoxHeight].join(' ')">
+            <!-- 
+            <svg sd:svg
+             -->
+            <sd:xinclude href="test.svg"/>
+            
             <g x="50">
                <!--  interpolated attributes {{}} -->
                <rect sd:fill="{{fill}}" sd:stroke="{{stroke}}" sd:width="{{width}}" sd:height="{{height}}"/>
                <g>
                   <rect ng:repeat="item in items"  
                         ng:click="clicked(event, item)" 
-                        sd:stroke="stroke" sd:fill="fill"
-                        sd:x="item.x" sd:y="item.y" 
-                        sd:width="item.width" sd:height="item.height"/>
+                        ng:attr:stroke="{{stroke}}" 
+                        ng:attr:fill="{{fill}}"
+                        ng:attr-x="{{item.x}}" ng:attr-y="{{item.y}}" 
+                        ng:attr:width="item.width" ng:attr:height="item.height"/>
                   <text x="0" y="170">ng:repeated items with click handler {{stroke}}</text>
                </g>
             </g>
-            <g>
-             <text x="0" y="200">Animation count: {{animationCount}}</text>
-             <rect x="10" y="10" width="100" height="100" sd:fill="fill">
+            <g y="400">
+             <rect x="10" y="10" width="100" height="100" 
+                    ng:attr-fill="{{fill}}">
                   <animate attributeType="XML"
-                           attributeName="x"
+                           sd:attribute-name="animationAttr"
                            from="-100" to="120"
-                           sd:dur="{{animationDuration}}"
+                           ng:attr-dur="{{animationDuration}}s"
                            onload="console.log('loaded')"
                            repeatCount="indefinite"/>
               </rect>
             </g>
          </svg>
+         <hr>
+         <h2>SD Includes</h2>
+         <h3>All rects</h3>
+         <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <sd:xinclude href="includes/rects.svg"/>
+         </svg>
       </div>
+
       <script>
          angular.module('demo', ['sd']).
           controller('DemoCtrl', function ($scope) {
@@ -143,7 +126,8 @@
             $scope.height = 50;
             $scope.fill = 'pink';
             $scope.stroke = 'black';
-            $scope.animationDuration = '4s';
+            $scope.animationDuration = '4';
+            $scope.animationAttr = 'x';
             
             
             $scope.image = 'http://angularjs.org/img/AngularJS-large.png';

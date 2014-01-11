@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- 
+  shows that scope variables like width and height can be used in xincluded templates
+   -->
+  <g ng:repeat="color in ['red','green','blue']" ng:attr-fill="{{color}}" ng:attr-transform="translate(0, {{$index * (height + 20)}})">
+    <rect ng:attr-width="{{width}}" ng:attr-height="{{height}}"/>
+    <rect ng:attr-x="{{width + 10}}" ng:attr-width="{{width/2}}" ng:attr-height="{{height/2}}"/>
+    <rect ng:attr-x="{{(width * 2) + 20}}" ng:attr-width="{{width/3}}" ng:attr-height="{{height/3}}"/>    
+  </g>
+</svg>

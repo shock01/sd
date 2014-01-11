@@ -1,0 +1,11 @@
+{
+  "private": "true",
+  "name": "sd",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-connect": "~0.6.0",
+    "grunt-jsbeautifier": "~0.2.6",
+    "grunt-contrib-jshint": "~0.8.0"
+  }
+}
