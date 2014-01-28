@@ -66,7 +66,7 @@
      * A reusuable service that other custom directives 
      * can use for rendering custom SVG templates
      */
-    angular.module('sd').factory('svgBuilder', function( $compile ) {
+    angular.module('sd').factory('svgCompile', function( $compile ) {
         
         var xmlSerializer = new XMLSerializer();
 
@@ -130,7 +130,7 @@
      * TODO implement full spec: http://www.w3.org/TR/xinclude/
      * TODO polyfill for XPathEvaluator
      */
-    angular.module('sd').directive('sdXinclude', function($http, $templateCache, svgBuilder ) {
+    angular.module('sd').directive('sdXinclude', function($http, $templateCache, svgCompile ) {
 
         
         return {
@@ -145,7 +145,7 @@
                     $http.get(href, {
                         cache: $templateCache
                     }).success(function(response) {
-                        svgBuilder.build( response, iElement, scope, xpointer  );
+                        svgCompile.build( response, iElement, scope, xpointer  );
                     }).error(function(error) {
 
                     });
