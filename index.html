@@ -7,7 +7,19 @@
    </head>
    <body>
       <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/hammerjs/hammer.js"></script>
+      <script src="bower_components/hammerjs/plugins/hammer.fakemultitouch.js"></script>
+      <script src="bower_components/hammerjs/plugins/hammer.showtouches.js"></script>
+      <script>
+      Hammer.plugins.fakeMultitouch();
+      Hammer.plugins.showTouches();
+      </script>
+      
+      <script src="src/xmlns.js"></script>
       <script src="src/sd.js"></script>
+      <script src="src/compile.js"></script>
+      <script src="src/xinclude.js"></script>
+      
       <div ng-app="demo" ng-controller="DemoCtrl" class="container">
          <h1>Angular SVG Directive Demo</h1>
          <p class="lead">Basic demo of what can be done with angular and data binding svg.</p>
@@ -130,6 +142,29 @@
          <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink">
             <sd:xinclude href="includes/rects.svg" xpointer="//*[@id='second']"/>
          </svg>
+     <h2>SD Zoomable</h2>
+     <p>Dispatches CustomEvents zoombegin, zoom, zoomend
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" width="400" height="400" sd:viewBox="0 0 400 400" sd:zoomable>
+        <sd:xinclude href="includes/Ghostscript_Tiger.svg"/>
+      </svg>
+      <h2>SD Selectable</h2>
+      <p>Dispatches CustomEvent select</p>
+       <svg width="400" height="400" sd:viewBox="0 0 400 400">
+        <rect width="200" height="200" fill="red" sd:selectable="true"/>
+        <rect width="200" height="200" x="200" fill="blue" sd:selectable/>
+        <rect width="400" height="200" y="200" fill="green" sd:selectable="false"/>
+      </svg>
+      <h2>SD Transformable</h2>
+      <p>Using gestures(using hammerjs) and mouse.</p>
+      <p>Supports scaling (ScaleMode.SCALE), moving, rotating, resizing (ScaleMode.RESIZE)</p>
+      <p>Supports transform origins (Origin.TOP, Origin.BOTTOM, Origin.LEFT, Origin.RIGHT, Origin.CENTER)</p>
+      <p>Supports clipping box, overlap constraint and hit detection</p>
+      <p>Dispatched ustomEvents transformbegin, transform, transformend</p>
+       <svg width="400" height="400" sd:viewBox="0 0 400 400">
+        <rect width="200" height="200" fill="red" sd:transformable="transformOptions"/>
+        <rect width="200" height="200" fill="green" sd:transformable transform="translate(200,200)"/>
+      </svg>             
+         
       </div>
       <script>
          angular.module('demo', ['sd']).

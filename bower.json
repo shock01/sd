@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "devDependencies": {
     "bootstrap": "~3.0.3",
-    "angular": "~1.2.8"
+    "angular": "~1.2.8",
+    "hammerjs": "~1.0.6"
   }
 }

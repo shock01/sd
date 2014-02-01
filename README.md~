@@ -49,7 +49,7 @@ the included svg files can contain normal angular binding stuff like ng-repeat a
 - Add documentation 'To Whom It May Concern'
 
 # new ideas
-- Zoomable SVGSVGElement sd:zoomable
+- Zoomable SVGSVGElement
 - sd:selectable
 - sd:transformable
 
