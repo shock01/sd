@@ -13,8 +13,8 @@ angular.module('sd').factory('svgCompile', function($compile) {
      */
     function buildSvg(template, iElement, scope, xpointer) {
         var element = iElement[0],
-        	parentNode = element.parentNode,
-        	tpl = '<svg>' + template + '</svg>',
+            parentNode = element.parentNode,
+            tpl = '<svg>' + template + '</svg>',
             wrapper = document.createElement('div'),
             frag = document.createDocumentFragment(),
             xPathWrapper,
@@ -27,7 +27,7 @@ angular.module('sd').factory('svgCompile', function($compile) {
         wrapper.insertAdjacentHTML('afterBegin', tpl);
 
         if (xpointer) {
-        	xPathWrapper = document.createElement('div');
+            xPathWrapper = document.createElement('div');
             xPathWrapper.insertAdjacentHTML('afterBegin', '<svg/>');
             xPathResult = document.evaluate(xpointer, wrapper, null, XPathResult.ANY_TYPE, null);
             while (xPathResult && (node = xPathResult.iterateNext())) {
@@ -47,9 +47,9 @@ angular.module('sd').factory('svgCompile', function($compile) {
         element.appendChild(frag);
 
         $compile(iElement.contents())(scope, function(clonedElement, scope) {
-            var frag = document.createDocumentFragment(), 
-            	i, 
-            	ii;
+            var frag = document.createDocumentFragment(),
+                i,
+                ii;
             for (i = 0, ii = clonedElement.length; i < ii; i++) {
                 frag.appendChild(clonedElement[i]);
             }

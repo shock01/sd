@@ -4,7 +4,7 @@
     angular.module('sd', []);
 
 
-        var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g,
+    var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g,
 
         // Viewport Attributes
         viewAttrs = ['viewBox', 'preserveAspectRatio'],
