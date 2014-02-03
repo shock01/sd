@@ -147,8 +147,23 @@
      <h2>SD Zoomable / Pannable (lets call it SDViewBoxView)</h2>
      <p>Dispatches CustomEvents zoombegin, zoom, zoomend</p>
      <p>Use shift+click to simulate touch</p>
+     <div class="form-group">
+      <form role="form" class="form-inline">
+           <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="enableZoom">Enable zoom
+            </label>
+          </div>
+           <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="enablePan">Enable pan
+            </label>
+          </div>
+        </div>
+      </form>
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" width="400" height="400" viewBox="0 0 900 900" 
-        sd:view-box-view transform="matrix(0.5,0,0,0.5,0,0)">
+        sd:view-box-view transform="matrix(0.5,0,0,0.5,0,0)"
+        sd:zoomable="enableZoom" sd:pannable="enablePan">
         <rect fill="yellow" width="900" height="900" stroke="black"/>
         <sd:xinclude href="includes/Ghostscript_Tiger.svg"/>
       </svg>
@@ -185,6 +200,9 @@
             $scope.animationDuration = '4';
             $scope.animationAttr = 'x';
             
+            
+            $scope.enablePan = true;
+            $scope.enableZoom = true;
             
             $scope.image = 'http://angularjs.org/img/AngularJS-large.png';
             $scope.filter = 'none'

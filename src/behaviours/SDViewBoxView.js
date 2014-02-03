@@ -19,7 +19,8 @@ function SDViewBoxView(x, y, width, height) {
 }
 
 SDViewBoxView.prototype = {
-
+    zoomable: true,
+    pannable: true,
     attach: function(element) {
 
         if (!(element instanceof SVGSVGElement)) {
@@ -27,30 +28,16 @@ SDViewBoxView.prototype = {
         }
 
         this.svgSvgElement = element;
-
-
-        element.addEventListener('pinch', this, false);
-        element.addEventListener('transformstart', this, false);
-        element.addEventListener('transformend', this, false);
-
-        element.addEventListener('drag', this, false);
-        element.addEventListener('dragstart', this, false);
-        element.addEventListener('dragend', this, false);
+        this.enablePan(this.pannable);
+        this.enableZoom(this.zoomable);
 
         Hammer(element);
-
     },
 
     destroy: function() {
-        var element = this.svgSvgElement;
-
-        element.removeEventListener('pinch', this, false);
-        element.removeEventListener('transformstart', this, false);
-        element.removeEventListener('transformend', this, false);
-
-        element.removeEventListener('drag', this, false);
-        element.removeEventListener('dragstart', this, false);
-        element.removeEventListener('dragend', this, false);
+        this.removePanEventListeners();
+        this.removeZoomEventListeners();
+        this.svgSvgElement = null;
     },
 
     prepare: function() {
@@ -71,32 +58,40 @@ SDViewBoxView.prototype = {
     },
 
     zoom: function(factor) {
-        var width = this.width / factor,
-            height = this.height / factor,
-            x = parseFloat(this.x),
-            y = parseFloat(this.y),
-            viewBox;
+        if (!this.zoomable) {
+            return null;
+        } else {
+            var width = this.width / factor,
+                height = this.height / factor,
+                x = parseFloat(this.x),
+                y = parseFloat(this.y),
+                viewBox;
 
-        x = this.x - (width - this.width) / 2 //this.x - ((width - this.width) / 2);
-        y = this.x - (height - this.height) / 2 //((this.height - height) / 2) * factor//this.y - ((height - this.height) / 2);
+            x = this.x - (width - this.width) / 2 //this.x - ((width - this.width) / 2);
+            y = this.x - (height - this.height) / 2 //((this.height - height) / 2) * factor//this.y - ((height - this.height) / 2);
 
-        viewBox = {
-            x: x,
-            y: y,
-            width: width,
-            height: height
-        };
+            viewBox = {
+                x: x,
+                y: y,
+                width: width,
+                height: height
+            };
 
-        return viewBox;
+            return viewBox;
+        }
     },
 
     pan: function(deltaX, deltaY) {
-        return {
-            x: this.currentViewBox.x + deltaX,
-            y: this.currentViewBox.y + deltaY,
-            width: this.currentViewBox.width,
-            height: this.currentViewBox.height
-        };
+        if (!this.pannable) {
+            return null;
+        } else {
+            return {
+                x: this.currentViewBox.x + deltaX,
+                y: this.currentViewBox.y + deltaY,
+                width: this.currentViewBox.width,
+                height: this.currentViewBox.height
+            };
+        }
     },
 
     commit: function() {
@@ -111,6 +106,52 @@ SDViewBoxView.prototype = {
         this.svgSvgElement.viewBox.baseVal.y = viewBox.y;
         this.svgSvgElement.viewBox.baseVal.width = viewBox.width;
         this.svgSvgElement.viewBox.baseVal.height = viewBox.height;
+    },
+
+    enablePan: function(flag) {
+        this.pannable = flag;
+        if (flag) {
+            this.addPanEventListeners();
+        } else {
+            this.removePanEventListeners();
+        }
+    },
+
+    enableZoom: function(flag) {
+        this.zoomable = flag;
+        if (flag) {
+            this.addZoomEventListeners();
+        } else {
+            this.removeZoomEventListeners();
+        }
+    },
+
+    addPanEventListeners: function() {
+        var element = this.svgSvgElement;
+        element.addEventListener('drag', this, false);
+        element.addEventListener('dragstart', this, false);
+        element.addEventListener('dragend', this, false);
+    },
+
+    addZoomEventListeners: function() {
+        var element = this.svgSvgElement;
+        element.addEventListener('pinch', this, false);
+        element.addEventListener('transformstart', this, false);
+        element.addEventListener('transformend', this, false);
+    },
+
+    removePanEventListeners: function() {
+        var element = this.svgSvgElement;
+        element.removeEventListener('drag', this, false);
+        element.removeEventListener('dragstart', this, false);
+        element.removeEventListener('dragend', this, false);
+    },
+
+    removeZoomEventListeners: function() {
+        var element = this.svgSvgElement;
+        element.removeEventListener('pinch', this, false);
+        element.removeEventListener('transformstart', this, false);
+        element.removeEventListener('transformend', this, false);
     },
 
     handleEvent: function(event) {
@@ -129,7 +170,6 @@ SDViewBoxView.prototype = {
                 this.dispatchEvent('panend', viewBox);
                 this.commit();
                 break;
-
             case 'transformstart':
                 this.dispatchEvent('zoombegin', this.currentViewBox);
                 this.prepare();

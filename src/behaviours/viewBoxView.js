@@ -11,11 +11,26 @@ angular.module('sd').factory('sdViewBoxViewProvider', function() {
 angular.module('sd').directive('sdViewBoxView', ['$log', 'sdViewBoxViewProvider',
     function($log, sdViewBoxViewProvider) {
         return {
+            restrict: 'A',
+            scope: {
+                zoomable: '=sdZoomable',
+                pannable: '=sdPannable'
+            },
             compile: function compile(tElement, tAttrs, transclude) {
 
                 return function postLink(scope, iElement, iAttrs, controller) {
 
                     var view = sdViewBoxViewProvider.build(iElement[0]);
+
+                    scope.$watch('zoomable', function(newValue, oldValue) {
+                        $log.debug('Enabling zoom', newValue);
+                        view.enableZoom(newValue);
+                    });
+
+                    scope.$watch('pannable', function(newValue, oldValue) {
+                        $log.debug('Enabling pan', newValue);
+                        view.enablePan(newValue);
+                    })
 
                     scope.$on('$destroy', function() {
                         view.destroy();
