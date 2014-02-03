@@ -116,12 +116,6 @@ SDViewBoxView.prototype = {
     handleEvent: function(event) {
         var gesture = event.gesture;
         switch (event.type) {
-            case 'pinch':
-                var viewBox = this.zoom(gesture.scale);
-                this.dispatchEvent('zoom', viewBox);
-                this.currentViewBox = viewBox;
-                this.draw(viewBox);
-                break;
             case 'dragstart':
                 this.dispatchEvent('panbegin', viewBox);
                 this.prepare();
@@ -135,12 +129,16 @@ SDViewBoxView.prototype = {
                 this.dispatchEvent('panend', viewBox);
                 this.commit();
                 break;
+
             case 'transformstart':
                 this.dispatchEvent('zoombegin', this.currentViewBox);
                 this.prepare();
                 break;
-            case 'dragstart':
-                this.prepare();
+            case 'pinch':
+                var viewBox = this.zoom(gesture.scale);
+                this.dispatchEvent('zoom', viewBox);
+                this.currentViewBox = viewBox;
+                this.draw(viewBox);
                 break;
             case 'transformend':
                 this.dispatchEvent('zoomend', this.currentViewBox);
