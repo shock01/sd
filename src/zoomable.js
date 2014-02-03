@@ -115,14 +115,24 @@ SDZoomable.prototype = {
     }
 }
 
-angular.module('sd').directive('sdZoomable', ['$log',
-    function($log) {
+angular.module('sd').factory('sdZoomableProvider', function() {
+    return {
+        build: function(element) {
+            var instance = new SDZoomable();
+            instance.attach(element);
+            return instance;
+        }
+    }
+});
+
+angular.module('sd').directive('sdZoomable', ['$log', 'sdZoomableProvider',
+    function($log, sdZoomableProvider) {
         return {
             compile: function compile(tElement, tAttrs, transclude) {
-                var zoomable = new SDZoomable();
+
                 return function postLink(scope, iElement, iAttrs, controller) {
 
-                    zoomable.attach(iElement[0]);
+                    var zoomable = sdZoomableProvider.build(iElement[0]);
 
                     scope.$on('$destroy', function() {
                         zoomable.destroy();
