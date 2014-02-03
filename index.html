@@ -19,7 +19,8 @@
       <script src="src/sd.js"></script>
       <script src="src/compile.js"></script>
       <script src="src/xinclude.js"></script>
-      
+      <script src="src/zoomable.js"></script>
+            
       <div ng-app="demo" ng-controller="DemoCtrl" class="container">
          <h1>Angular SVG Directive Demo</h1>
          <p class="lead">Basic demo of what can be done with angular and data binding svg.</p>
@@ -144,7 +145,8 @@
          </svg>
      <h2>SD Zoomable</h2>
      <p>Dispatches CustomEvents zoombegin, zoom, zoomend
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" width="400" height="400" sd:viewBox="0 0 400 400" sd:zoomable>
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" width="400" height="400" viewBox="0 0 900 900" 
+        sd:zoomable>
         <sd:xinclude href="includes/Ghostscript_Tiger.svg"/>
       </svg>
       <h2>SD Selectable</h2>
