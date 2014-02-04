@@ -16,11 +16,16 @@ function SDViewBoxView(x, y, width, height) {
 
     this.svgSvgElement = null;
     this.currentViewBox = null;
+    this.hammer = null;
+    this.cardinalPoints = null;
 }
 
 SDViewBoxView.prototype = {
+
     zoomable: true,
     pannable: true,
+    zoomOrigin: SDOrigin.CENTER,
+
     attach: function(element) {
 
         if (!(element instanceof SVGSVGElement)) {
@@ -28,19 +33,21 @@ SDViewBoxView.prototype = {
         }
 
         this.svgSvgElement = element;
+        this.cardinalPoints = new SDCardinalPoints(element);
         this.enablePan(this.pannable);
         this.enableZoom(this.zoomable);
 
-        Hammer(element);
+        this.hammer = Hammer(element);
     },
 
     destroy: function() {
         this.removePanEventListeners();
         this.removeZoomEventListeners();
         this.svgSvgElement = null;
+        this.hammer = null;
     },
 
-    prepare: function() {
+    prepare: function(pointer) {
         var element = this.svgSvgElement,
             viewBox = element.viewBox.baseVal;
 
@@ -48,6 +55,15 @@ SDViewBoxView.prototype = {
         this.y = parseFloat(viewBox.y);
         this.width = parseFloat(viewBox.width || element.width.baseVal.value);
         this.height = parseFloat(viewBox.height || element.height.baseVal.value);
+
+        if (pointer) {
+            var point = element.createSVGPoint();
+            point.x = pointer.pageX;
+            point.y = pointer.pageY;
+            this.pointer = point.matrixTransform(element.getScreenCTM().inverse());
+        } else {
+            this.pointer = null;
+        }
 
         this.currentViewBox = {
             x: this.x,
@@ -61,14 +77,15 @@ SDViewBoxView.prototype = {
         if (!this.zoomable) {
             return null;
         } else {
-            var width = this.width / factor,
+            var offset = this.zoomOffset(factor),
+                width = this.width / factor,
                 height = this.height / factor,
                 x = parseFloat(this.x),
                 y = parseFloat(this.y),
                 viewBox;
 
-            x = this.x - (width - this.width) / 2 //this.x - ((width - this.width) / 2);
-            y = this.x - (height - this.height) / 2 //((this.height - height) / 2) * factor//this.y - ((height - this.height) / 2);
+            x = this.x - offset.x;
+            y = this.x - offset.y;
 
             viewBox = {
                 x: x,
@@ -106,6 +123,56 @@ SDViewBoxView.prototype = {
         this.svgSvgElement.viewBox.baseVal.y = viewBox.y;
         this.svgSvgElement.viewBox.baseVal.width = viewBox.width;
         this.svgSvgElement.viewBox.baseVal.height = viewBox.height;
+    },
+
+    zoomOffset: function(factor) {
+        var zoomOrigin = this.zoomOrigin,
+            originalCardinalPoints = this.cardinalPoints.points(this.width, this.height),
+            cardinalPoints = this.cardinalPoints.points(this.width / factor, this.height / factor),
+            pointer = this.pointer,
+            offsetX = 0,
+            offsetY = 0;
+
+
+        switch (zoomOrigin) {
+            case SDOrigin.TOP:
+                offsetX = cardinalPoints.c.x - originalCardinalPoints.c.x;
+                break;
+            case SDOrigin.TOPLEFT:
+                offsetX = cardinalPoints.w.x - originalCardinalPoints.w.x;
+                break;
+            case SDOrigin.TOPRIGHT:
+                offsetX = cardinalPoints.e.x - originalCardinalPoints.e.x;
+                break;
+            case SDOrigin.RIGHT:
+                offsetX = cardinalPoints.e.x - originalCardinalPoints.e.x;
+                offsetY = cardinalPoints.e.y - originalCardinalPoints.e.y;
+                break;
+            case SDOrigin.BOTTOMRIGHT:
+                offsetX = cardinalPoints.e.x - originalCardinalPoints.e.x;
+                offsetY = cardinalPoints.s.y - originalCardinalPoints.s.y;
+                break;
+            case SDOrigin.BOTTOM:
+                offsetX = cardinalPoints.c.x - originalCardinalPoints.c.x;
+                offsetY = cardinalPoints.s.y - originalCardinalPoints.s.y;
+                break;
+            case SDOrigin.BOTTOMLEFT:
+                offsetX = cardinalPoints.w.x - originalCardinalPoints.w.x;
+                offsetY = cardinalPoints.s.y - originalCardinalPoints.s.y;
+                break;
+            case SDOrigin.LEFT:
+                offsetX = cardinalPoints.w.x - originalCardinalPoints.w.x;
+                offsetY = cardinalPoints.w.y - originalCardinalPoints.w.y;
+                break;
+            case SDOrigin.CENTER:
+                offsetX = cardinalPoints.c.x - originalCardinalPoints.c.x;
+                offsetY = cardinalPoints.c.y - originalCardinalPoints.c.y;
+                break;
+        }
+        return {
+            x: offsetX,
+            y: offsetY
+        }
     },
 
     enablePan: function(flag) {
@@ -155,11 +222,17 @@ SDViewBoxView.prototype = {
     },
 
     handleEvent: function(event) {
-        var gesture = event.gesture;
+        var svg = this.svgSvgElement,
+            gesture = event.gesture;
+
+        if (!gesture) {
+            return;
+        }
+
         switch (event.type) {
             case 'dragstart':
                 this.dispatchEvent('panbegin', viewBox);
-                this.prepare();
+                this.prepare(gesture.center);
                 break;
             case 'drag':
                 var viewBox = this.pan(-gesture.deltaX, -gesture.deltaY);
@@ -172,7 +245,7 @@ SDViewBoxView.prototype = {
                 break;
             case 'transformstart':
                 this.dispatchEvent('zoombegin', this.currentViewBox);
-                this.prepare();
+                this.prepare(gesture.center);
                 break;
             case 'pinch':
                 var viewBox = this.zoom(gesture.scale);

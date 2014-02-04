@@ -20,6 +20,8 @@
       <dd>...</dd>
       <dt>panbegin</dt>
       <dd>...</dd>
+      <dt>pan</dt>
+      <dd>...</dd>
       <dt>panend</dt>
       <dd>...</dd>
     </dl>
@@ -31,17 +33,18 @@
             zoom
           </label>
         </div>
-        <div class="checkbox">
-          <label> <input type="checkbox" ng-model="enablePan">Enable
-            pan
-          </label>
-        </div>
+        <div class="form-group">
+           <label for="zoomOrigin">Set zoom origin</label>
+           <select class="form-control" name="zoomOrigin" ng-model="zoomOrigin" ng-options="origin for origin in zoomOrigins"></select>
+        </div>        
     </div>
     </form>
     <svg xmlns="http://www.w3.org/2000/svg"
         xmlns:sd="uri:whatevermakesyouhappy" width="400" height="400"
         viewBox="0 0 900 900" sd:view-box-view
-        transform="matrix(0.5,0,0,0.5,0,0)" sd:zoomable="enableZoom"
+        transform="matrix(0.5,0,0,0.5,0,0)" 
+        sd:zoomable="enableZoom"
+        sd:origin="zoomOrigin"
         sd:pannable="enablePan">
       <rect fill="yellow" width="900" height="900" stroke="black" />
       <sd:xinclude href="includes/Ghostscript_Tiger.svg" />

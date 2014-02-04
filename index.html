@@ -19,6 +19,8 @@
       
       <script src="src/xmlns.js"></script>
       <script src="src/sd.js"></script>
+      <script src="src/SDOrigin.js"></script>
+      <script src="src/SDCardinalPoints.js"></script>
       <script src="src/compile/compile.js"></script>
       <script src="src/xinclude/xinclude.js"></script>
       <script src="src/behaviours/SDViewBoxView.js"></script>
@@ -56,6 +58,8 @@
       controller('ViewBoxViewCtrl', function ($scope) {
         $scope.enablePan = true;
         $scope.enableZoom = true;
+        $scope.zoomOrigin = 'CENTER';
+        $scope.zoomOrigins = ['TOPLEFT','TOP','TOPRIGHT','RIGHT','BOTTOMRIGHT','BOTTOM','BOTTOMLEFT','LEFT','CENTER'];
       }).      
       config(['$routeProvider', function($routeProvider) {
         $routeProvider.
