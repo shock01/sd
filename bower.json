@@ -5,6 +5,7 @@
     "bootstrap": "~3.0.3",
     "angular": "~1.2.8",
     "hammerjs": "~1.0.6",
-    "angular-mocks": "~1.2.11"
+    "angular-mocks": "~1.2.11",
+    "angular-route": "~1.2.11"
   }
 }
