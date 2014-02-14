@@ -16,7 +16,6 @@ function SDViewBoxView(x, y, width, height) {
 
     this.svgSvgElement = null;
     this.currentViewBox = null;
-    this.hammer = null;
     this.cardinalPoints = null;
 }
 
@@ -37,14 +36,12 @@ SDViewBoxView.prototype = {
         this.enablePan(this.pannable);
         this.enableZoom(this.zoomable);
 
-        this.hammer = Hammer(element);
     },
 
     destroy: function() {
         this.removePanEventListeners();
         this.removeZoomEventListeners();
         this.svgSvgElement = null;
-        this.hammer = null;
     },
 
     prepare: function(pointer) {
