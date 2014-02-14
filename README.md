@@ -14,6 +14,9 @@ Simple thingie. Just add : g:file-select="controller.fileSelected(file)" to trig
 Needed? Yes !! not all browsers support svg foreignObject properly. 
 Does this work Cross-Browser?? Help i don't know. Works on Chrome desktop, android stock..not tested iOS (I don't like them apples)
 
+## SVg Viewbox scaling with gestures (using hammerJS)
+Just try the demo
+
 ## Support for xinclude
 
 ng:include does not work on svg elements because the browser does not parse the svg content as svg elements.
@@ -45,16 +48,9 @@ the included svg files can contain normal angular binding stuff like ng-repeat a
 ```
 
 # Not Supported Yet
-- viewBox , preserveAspectRatio etc.
-- xinclude xpointer,parse attributes
+- A lot
 
 # Hey it's just a quick commit
 - Add test cases (angular scenario, ngdocs)
 - Add more attributes
 - Add documentation 'To Whom It May Concern'
-
-# new ideas
-- Zoomable SVGSVGElement sd:zoomable
-- sd:selectable
-- sd:transformable
-
