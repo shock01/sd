@@ -18,7 +18,7 @@ module.exports = function(grunt) {
                 }
             },
             jsbeautifier: {
-                src: ['Gruntfile.js', 'src/**/*.js'],
+                src: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
                 options: {
                     "indent_size": 2,
                     "indent_char": " ",
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
                         jshintrc: '.jshintrc',
                         force: true,
                     },
-                    src: ['src/**/*.js']
+                    src: ['src/**/*.js', 'test/**/*.js']
                 }
             },
         });

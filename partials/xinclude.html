@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1>SD XInclude</h1>
+    </div>
+    <p class="lead">
+      ng:include does not work on svg elements because the browser does not parse the svg content as svg elements.
+      HTML5 supposed to be namespace unware. But it isn't. So working on a replacement solution for ng:include
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-mid-12">
+     <h3>Bare example</h3>
+     <pre>&lt;sd:xinclude href="includes/test.svg"/&gt;</pre>
+     <svg height="100">
+        <sd:xinclude href="includes/test.svg"/>
+     </svg>
+     <h3>Rects first</h3>
+     <pre>&lt;sd:xinclude href="includes/rects.svg" xpointer="//*[@id='first']"/&gt;</pre>
+     <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink" height="200">
+        <sd:xinclude href="includes/rects.svg" xpointer="//*[@id='first']"/>
+     </svg>
+     <h3>Rects second</h3>
+     <pre>&lt;sd:xinclude href="includes/rects.svg" xpointer="//*[@id='second']"/&gt;</pre>
+     <svg xmlns="http://www.w3.org/2000/svg" xmlns:sd="uri:whatevermakesyouhappy" xmlns:xlink="http://www.w3.org/1999/xlink" height="200">
+        <sd:xinclude href="includes/rects.svg" xpointer="//*[@id='second']"/>
+     </svg>
+  </div>
+</div>

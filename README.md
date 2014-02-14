@@ -47,3 +47,9 @@ the included svg files can contain normal angular binding stuff like ng-repeat a
 - Add test cases (angular scenario, ngdocs)
 - Add more attributes
 - Add documentation 'To Whom It May Concern'
+
+# new ideas
+- Zoomable SVGSVGElement sd:zoomable
+- sd:selectable
+- sd:transformable
+

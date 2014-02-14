@@ -3,15 +3,15 @@
     'use strict';
     angular.module('sd', []);
 
-    // namespaces
-    var XMLNS = {
-        XML: 'http://www.w3.org/XML/1998/namespace',
-        SVG: 'http://www.w3.org/2000/svg',
-        XLINK: 'http://www.w3.org/1999/xlink',
-        XMLNS: 'http://www.w3.org/2000/xmlns/',
-        XI: 'http://www.w3.org/2001/XInclude'
-    },
-        SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g,
+    // setup hammerjs
+    angular.module('sd').run(function($log) {
+        $log.info('[SD] Initializing HammerHS');
+        Hammer(document.body);
+
+    })
+
+
+    var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g,
 
         // Viewport Attributes
         viewAttrs = ['viewBox', 'preserveAspectRatio'],
@@ -62,97 +62,7 @@
         }
     }
 
-    /**
-     * A reusuable service that other custom directives 
-     * can use for rendering custom SVG templates
-     */
-    angular.module('sd').factory('svgCompile', function( $compile ) {
-        
-        var xmlSerializer = new XMLSerializer();
 
-        /**
-         * Pass in the template string, element from angular
-         * directive, scope and xpointer and the template
-         * will be rendered on the provided element
-         */
-        function buildSvg( template, iElement, scope, xpointer  ){
-            var element = iElement[0];
-            var parentNode = element.parentNode;
-            var tpl = '<svg>' + template + '</svg>',
-                wrapper = document.createElement('div'),
-                xPathWrapper = document.createElement('div'),
-                frag = document.createDocumentFragment(),
-                xPathResult,
-                nodes = [],
-                xml = '',
-                node;
-            wrapper.insertAdjacentHTML('afterBegin', tpl);
-
-            if (xpointer) {
-                xPathWrapper.insertAdjacentHTML('afterBegin', '<svg></svg>');
-                xPathResult = document.evaluate(xpointer, wrapper, null, XPathResult.ANY_TYPE, null);
-                while (xPathResult && (node = xPathResult.iterateNext())) {
-                    nodes.push(node);
-                }
-                angular.forEach(nodes, function(node) {
-                    xml += xmlSerializer.serializeToString(node, 'text/xml');
-                });
-                xPathWrapper.insertAdjacentHTML('afterBegin', '<svg>' + xml + '</svg>');
-                for (var j = 0, childNode; childNode = xPathWrapper.firstChild.childNodes[j++];) {
-                    frag.appendChild(childNode);
-                }
-            } else {
-                frag.appendChild(wrapper.firstChild.firstChild);
-            }
-
-            element.appendChild(frag);
-
-            $compile(iElement.contents())(scope, function(clonedElement, scope) {
-                var frag = document.createDocumentFragment();
-                for (var i = 0, ii = clonedElement.length; i < ii; i++) {
-                    frag.appendChild(clonedElement[i]);
-                }
-                parentNode.replaceChild(frag, element);
-            });
-
-            wrapper = null;
-            xPathWrapper = null;
-        }
-
-        return {
-            build : buildSvg
-        }
-      
-    });
-
-    /**
-     * xinclude directive.
-     * TODO implement full spec: http://www.w3.org/TR/xinclude/
-     * TODO polyfill for XPathEvaluator
-     */
-    angular.module('sd').directive('sdXinclude', function($http, $templateCache, svgCompile ) {
-
-        
-        return {
-            restrict: 'E',
-            compile: function compile(tElement, tAttrs, transclude) {
-
-                return function postLink(scope, iElement, iAttrs, controller) {
-                    var element = iElement[0],
-                        href = iAttrs['href'],
-                        xpointer = iAttrs['xpointer'],
-                        parentNode = element.parentNode;
-                    $http.get(href, {
-                        cache: $templateCache
-                    }).success(function(response) {
-                        svgCompile.build( response, iElement, scope, xpointer  );
-                    }).error(function(error) {
-
-                    });
-                };
-            }
-        };
-    });
 
     angular.forEach([].concat(
         viewAttrs,
