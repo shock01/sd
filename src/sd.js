@@ -3,6 +3,13 @@
     'use strict';
     angular.module('sd', []);
 
+    // setup hammerjs
+    angular.module('sd').run(function($log) {
+        $log.info('[SD] Initializing HammerHS');
+        Hammer(document.body);
+
+    })
+
 
     var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g,
 
