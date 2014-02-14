@@ -9,6 +9,11 @@ SVG Directive for angular
 - Supports all camelCases attributes like viewBox
 
 
+## Triggering file input from SVG Elements
+Simple thingie. Just add : g:file-select="controller.fileSelected(file)" to trigger file select from SVG elements
+Needed? Yes !! not all browsers support svg foreignObject properly. 
+Does this work Cross-Browser?? Help i don't know. Works on Chrome desktop, android stock..not tested iOS (I don't like them apples)
+
 ## Support for xinclude
 
 ng:include does not work on svg elements because the browser does not parse the svg content as svg elements.
