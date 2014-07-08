@@ -8,13 +8,7 @@ SVG Directive for angular
 ## Basic support for AngularJS SVG Bindings.
 - Supports all camelCases attributes like viewBox
 
-
-## Triggering file input from SVG Elements
-Simple thingie. Just add : g:file-select="controller.fileSelected(file)" to trigger file select from SVG elements
-Needed? Yes !! not all browsers support svg foreignObject properly. 
-Does this work Cross-Browser?? Help i don't know. Works on Chrome desktop, android stock..not tested iOS (I don't like them apples)
-
-## SVg Viewbox scaling with gestures (using hammerJS)
+## SVG Viewbox scaling with gestures (using hammerJS)
 Just try the demo
 
 ## Support for xinclude
@@ -37,7 +31,7 @@ the included svg files can contain normal angular binding stuff like ng-repeat a
 
 
 # Installation
-- bower install angular bootstrap
+- bower install
 - npm install
 - run grunt and go to localhost:800 
 
