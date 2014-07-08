@@ -1,5 +1,6 @@
 /**
- *
+ * @todo remove hammerjs dependency
+ * 
  * @constructor
  *
  * @param x

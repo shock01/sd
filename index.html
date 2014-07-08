@@ -25,7 +25,6 @@
       <script src="src/xinclude/xinclude.js"></script>
       <script src="src/behaviours/SDViewBoxView.js"></script>
       <script src="src/behaviours/viewBoxView.js"></script>
-      <script src="src/fileinput/fileInput.js"></script>
       <div class="container">
         <div class="row">
           <ng-include src="'partials/header.html'" class="col-md-12"></ng-include>
@@ -82,7 +81,12 @@
           otherwise({
             redirectTo: '/attributes'
           });
-      }]);
+      }])
+      // setup hammerjs 
+      // @todo remove hammerjs
+      .run(function($log) {
+        Hammer(document.body);
+    })
         
       </script>
       

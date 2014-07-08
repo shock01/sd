@@ -1,4 +1,4 @@
-angular.module('sd').factory('sdViewBoxViewProvider', function() {
+angular.module('sd').factory('sdViewBoxViewFactory', function() {
     return {
         build: function(element) {
             var instance = new SDViewBoxView();
@@ -8,8 +8,8 @@ angular.module('sd').factory('sdViewBoxViewProvider', function() {
     }
 });
 
-angular.module('sd').directive('sdViewBoxView', ['$log', 'sdViewBoxViewProvider',
-    function($log, sdViewBoxViewProvider) {
+angular.module('sd').directive('sdViewBoxView', ['$log', 'sdViewBoxViewFactory',
+    function($log, sdViewBoxViewFactory) {
         return {
             restrict: 'A',
 
