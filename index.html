@@ -61,19 +61,7 @@
         $scope.enableZoom = true;
         $scope.zoomOrigin = 'CENTER';
         $scope.zoomOrigins = ['TOPLEFT','TOP','TOPRIGHT','RIGHT','BOTTOMRIGHT','BOTTOM','BOTTOMLEFT','LEFT','CENTER'];
-      }).   
-      controller('FileInputCtrl', function ($scope) {
-    	  $scope.enabled = true;
-        $scope.$watch('enabled', function (newValue) {
-          if(newValue === false) {
-            $scope.file = 'Select something dude(tte)'
-          }
-        })
-    	  
-    	  this.fileSelected = function (file) {
-    		  $scope.file = file;
-    	  }    	 
-      }).            
+      }).         
       config(['$routeProvider', function($routeProvider) {
         $routeProvider.
           when('/attributes', {
@@ -91,11 +79,6 @@
             controller: 'ViewBoxViewCtrl',
             controllerAs: 'page'
           }).    
-          when('/fileinput', {
-            templateUrl: 'partials/fileinput.html',
-            controller: 'FileInputCtrl',
-            controllerAs: 'page'
-          }).             
           otherwise({
             redirectTo: '/attributes'
           });
