@@ -19,12 +19,8 @@
       
       <script src="src/xmlns.js"></script>
       <script src="src/sd.js"></script>
-      <script src="src/SDOrigin.js"></script>
-      <script src="src/SDCardinalPoints.js"></script>
       <script src="src/compile/compile.js"></script>
       <script src="src/xinclude/xinclude.js"></script>
-      <script src="src/behaviours/SDViewBoxView.js"></script>
-      <script src="src/behaviours/viewBoxView.js"></script>
       <div class="container">
         <div class="row">
           <ng-include src="'partials/header.html'" class="col-md-12"></ng-include>
@@ -55,12 +51,6 @@
         $scope.width = 100;
         $scope.height = 50;
       }).
-      controller('ViewBoxViewCtrl', function ($scope) {
-        $scope.enablePan = true;
-        $scope.enableZoom = true;
-        $scope.zoomOrigin = 'CENTER';
-        $scope.zoomOrigins = ['TOPLEFT','TOP','TOPRIGHT','RIGHT','BOTTOMRIGHT','BOTTOM','BOTTOMLEFT','LEFT','CENTER'];
-      }).         
       config(['$routeProvider', function($routeProvider) {
         $routeProvider.
           when('/attributes', {
@@ -73,20 +63,10 @@
             controller: 'XIncludeCtrl',
             controllerAs: 'page'
           }).
-          when('/viewboxview', {
-            templateUrl: 'partials/viewboxview.html',
-            controller: 'ViewBoxViewCtrl',
-            controllerAs: 'page'
-          }).    
           otherwise({
             redirectTo: '/attributes'
           });
-      }])
-      // setup hammerjs 
-      // @todo remove hammerjs
-      .run(function($log) {
-        Hammer(document.body);
-    })
+      }]);
         
       </script>
       

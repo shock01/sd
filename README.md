@@ -8,9 +8,6 @@ SVG Directive for angular
 ## Basic support for AngularJS SVG Bindings.
 - Supports all camelCases attributes like viewBox
 
-## SVG Viewbox scaling with gestures (using hammerJS)
-Just try the demo
-
 ## Support for xinclude
 
 ng:include does not work on svg elements because the browser does not parse the svg content as svg elements.
