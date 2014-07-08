@@ -12,67 +12,31 @@ SDCardinalPoints.prototype.points = function(width, height, matrix) {
 
     point.x = 0;
     point.y = 0;
-    point = point.matrixTransform(matrix);
-    points.nw = {
-        x: point.x,
-        y: point.y
-    };
+    points.nw = point.matrixTransform(matrix);
 
     point.x += offsetWidth;
-    point = point.matrixTransform(matrix);
-    points.n = {
-        x: point.x,
-        y: point.y
-    };
+    points.n = point.matrixTransform(matrix);
 
     point.x += offsetWidth;
-    point = point.matrixTransform(matrix);
-    points.ne = {
-        x: point.x,
-        y: point.y
-    };
+    points.ne = point.matrixTransform(matrix);
 
     point.y += offsetHeight;
-    point = point.matrixTransform(matrix);
-    points.e = {
-        x: point.x,
-        y: point.y
-    };
+    points.e = point.matrixTransform(matrix);
 
     point.y += offsetHeight;
-    point = point.matrixTransform(matrix);
-    points.se = {
-        x: point.x,
-        y: point.y
-    };
+    points.se = point.matrixTransform(matrix);
 
     point.x -= offsetWidth;
-    point = point.matrixTransform(matrix);
-    points.s = {
-        x: point.x,
-        y: point.y
-    };
+    points.s = point.matrixTransform(matrix);
 
     point.x -= offsetWidth;
-    point = point.matrixTransform(matrix);
-    points.sw = {
-        x: point.x,
-        y: point.y
-    };
+    points.sw = point.matrixTransform(matrix);
 
     point.y -= offsetHeight;
-    point = point.matrixTransform(matrix);
-    points.w = {
-        x: point.x,
-        y: point.y
-    };
+    points.w = point.matrixTransform(matrix);
 
     point.x += offsetWidth;
-    point = point.matrixTransform(matrix);
-    points.c = {
-        x: point.x,
-        y: point.y
-    };
+    points.c = point.matrixTransform(matrix);
 
     return points;
 
