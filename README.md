@@ -30,7 +30,7 @@ the included svg files can contain normal angular binding stuff like ng-repeat a
 # Installation
 - bower install
 - npm install
-- run grunt and go to localhost:800 
+- run 'grunt connect' and go to localhost:8000 
 
 # Best practices
 - Use namespaces!! They don't harm you

@@ -5,9 +5,30 @@ var mountFolder = function(connect, dir) {
 module.exports = function(grunt) {
     'use strict';
 
+
     grunt
         .initConfig({
             pkg: grunt.file.readJSON('package.json'),
+            concat: {
+                dist: {
+                    src: ['src/xmlns.js','src/sd.js','src/compile/compile.js', 'src/xinclude/xinclude.js'],
+                    dest: '<%= pkg.name %>.js',
+                    options: {
+                        banner: ";(function(){ \n /** sd angular svg directives */ \n'use strict';",
+                        footer: "}());"
+                    }
+                }
+            },
+            uglify: {
+                options: {
+                    mangle: true
+                },
+                my_target: {
+                    files: {
+                        '<%= pkg.name %>.min.js': '<%= pkg.name %>.js'
+                    }
+                }
+            },
             connect: {
                 server: {
                     options: {
@@ -48,9 +69,13 @@ module.exports = function(grunt) {
         });
 
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.registerTask('default', ['connect']);
+
+    grunt.registerTask('build', ['concat','uglify']);
+    grunt.registerTask('default', ['build']);
 
 
 };

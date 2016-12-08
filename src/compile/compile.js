@@ -2,7 +2,8 @@
  * A reusuable service that other custom directives
  * can use for rendering custom SVG templates
  */
-angular.module('sd').factory('svgCompile', function($compile) {
+'use strict';
+angular.module('sd').factory('svgCompile', ['$compile', function($compile) {
 
     var xmlSerializer = new XMLSerializer();
 
@@ -64,4 +65,4 @@ angular.module('sd').factory('svgCompile', function($compile) {
         build: buildSvg
     }
 
-});
+}]);
