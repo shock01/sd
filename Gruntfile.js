@@ -14,7 +14,7 @@ module.exports = function(grunt) {
                     src: ['src/xmlns.js','src/sd.js','src/compile/compile.js', 'src/xinclude/xinclude.js'],
                     dest: '<%= pkg.name %>.js',
                     options: {
-                        banner: ";(function(){ \n /** sd angular svg directives */ \n'use strict';",
+                        banner: ";(function(){ \n /** sd angular svg directives */\n",
                         footer: "}());"
                     }
                 }
